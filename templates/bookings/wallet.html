@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your wallet</h2>
+<p>Balance: <strong>₹{{ balance }}</strong></p>
+<h3>Add money (demo form, no real payment)</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Add money</button>
+</form>
+{% endblock %}

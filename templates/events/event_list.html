@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Events</h2>
+{% for event in events %}
+  <div>
+    <h3><a href="{% url 'event_detail' event.pk %}">{{ event.title }}</a></h3>
+    <p>{{ event.get_event_type_display }} · {{ event.location }} · by {{ event.organization.name }}</p>
+  </div>
+{% empty %}
+  <p>No events yet.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your events</h2>
+<p><a href="{% url 'org_event_create' %}">+ New event</a></p>
+{% for event in events %}
+  <div>
+    <h3><a href="{% url 'org_event_detail' event.pk %}">{{ event.title }}</a></h3>
+    <p>{{ event.get_event_type_display }} · {{ event.slot_count }} slot(s) ·
+       {% if event.is_active %}Active{% else %}Hidden{% endif %}</p>
+  </div>
+{% empty %}
+  <p>You have no events yet.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}GoingOut{% endblock %}</title>
+</head>
+<body>
+  <nav>
+    {% if user.is_authenticated %}
+      Hi, {{ user.username }} |
+      {% if is_customer %}
+        <a href="{% url 'event_list' %}">Events</a> |
+        <a href="{% url 'wallet' %}">Wallet</a> |
+        <a href="{% url 'my_tickets' %}">My tickets</a> |
+        <a href="{% url 'my_bookings' %}">My bookings</a> |
+        <a href="{% url 'transactions' %}">Transactions</a> |
+      {% endif %}
+      {% if is_organization %}
+        <a href="{% url 'org_dashboard' %}">Dashboard</a> |
+        <a href="{% url 'org_tickets' %}">Tickets</a> |
+        <a href="{% url 'org_analytics' %}">Analytics</a> |
+      {% endif %}
+      <form method="post" action="{% url 'logout' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">Log out</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Log in</a> | <a href="{% url 'signup' %}">Sign up</a>
+    {% endif %}
+  </nav>
+  <hr>
+  {% if messages %}
+    <ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% block content %}{% endblock %}
+</body>
+</html>

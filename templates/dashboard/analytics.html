@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Analytics</h2>
+<ul>
+  <li>Total revenue: <strong>₹{{ summary.revenue }}</strong></li>
+  <li>Revenue, last 7 days: ₹{{ summary.revenue_last_7_days }}</li>
+  <li>Bookings: {{ summary.bookings }}</li>
+  <li>Tickets sold: {{ summary.tickets_sold }} (consumed {{ summary.tickets_consumed }}, active {{ summary.tickets_active }})</li>
+  <li>Capacity filled: {{ summary.fill_rate }}% of {{ summary.capacity }} seats</li>
+</ul>
+
+<h3>By event</h3>
+<table border="1" cellpadding="6">
+  <tr><th>Event</th><th>Tickets sold</th><th>Consumed</th><th>Revenue</th><th>Capacity</th><th>Filled</th></tr>
+  {% for row in rows %}
+  <tr>
+    <td>{{ row.event.title }}</td>
+    <td>{{ row.tickets_sold }}</td>
+    <td>{{ row.consumed }}</td>
+    <td>₹{{ row.revenue }}</td>
+    <td>{{ row.capacity }}</td>
+    <td>{{ row.fill_rate }}%</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="6">No events yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

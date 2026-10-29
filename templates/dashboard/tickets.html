@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Tickets for your events</h2>
+<form method="get">
+  <input type="text" name="q" placeholder="Search by ticket ID" value="{{ query }}" size="40">
+  <select name="status">
+    <option value="active" {% if status == "active" %}selected{% endif %}>Active</option>
+    <option value="consumed" {% if status == "consumed" %}selected{% endif %}>Consumed</option>
+    <option value="all" {% if status == "all" %}selected{% endif %}>All</option>
+  </select>
+  <button type="submit">Filter</button>
+</form>
+
+<table border="1" cellpadding="6">
+  <tr><th>Ticket ID</th><th>Event</th><th>Slot</th><th>Customer</th><th>Purchased</th><th>Status</th><th></th></tr>
+  {% for ticket in tickets %}
+  <tr>
+    <td><code>{{ ticket.ticket_id }}</code></td>
+    <td>{{ ticket.booking.slot.event.title }}</td>
+    <td>{{ ticket.booking.slot.start_time|date:"d M Y, H:i" }}</td>
+    <td>{{ ticket.booking.user.username }}</td>
+    <td>{{ ticket.booking.created_at|date:"d M Y, H:i" }}</td>
+    <td>{{ ticket.get_status_display }}{% if ticket.consumed_at %} ({{ ticket.consumed_at|date:"d M, H:i" }}){% endif %}</td>
+    <td>
+      {% if ticket.status == "active" %}
+      <form method="post" action="{% url 'org_ticket_consume' ticket.pk %}">
+        {% csrf_token %}
+        <button type="submit">Mark consumed</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="7">No tickets found.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

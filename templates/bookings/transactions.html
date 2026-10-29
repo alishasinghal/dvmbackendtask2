@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Transaction history</h2>
+<table border="1" cellpadding="6">
+  <tr><th>When</th><th>Type</th><th>Amount</th><th>Balance after</th><th>For</th></tr>
+  {% for t in transactions %}
+  <tr>
+    <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
+    <td>{{ t.get_type_display }}</td>
+    <td>{% if t.type == "credit" %}+{% else %}-{% endif %}₹{{ t.amount }}</td>
+    <td>₹{{ t.balance_after }}</td>
+    <td>{% if t.booking %}{{ t.booking.slot.event.title }}{% endif %}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="5">No transactions yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

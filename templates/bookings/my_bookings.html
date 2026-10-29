@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My bookings</h2>
+{% for booking in bookings %}
+  <div>
+    <h3>{{ booking.slot.event.title }}</h3>
+    <p>
+      {{ booking.slot.start_time|date:"d M Y, H:i" }} ·
+      {{ booking.quantity }} ticket(s) · ₹{{ booking.total_price }} ·
+      booked {{ booking.created_at|date:"d M Y, H:i" }}
+    </p>
+    <ul>
+      {% for ticket in booking.tickets.all %}
+        <li>{{ ticket.ticket_id }} ({{ ticket.get_status_display }})</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% empty %}
+  <p>No bookings yet.</p>
+{% endfor %}
+{% endblock %}

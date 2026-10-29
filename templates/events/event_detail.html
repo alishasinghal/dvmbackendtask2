@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ event.title }}</h2>
+<p>{{ event.description }}</p>
+<p>{{ event.get_event_type_display }} · {{ event.location }} · by {{ event.organization.name }}</p>
+
+<h3>Upcoming slots</h3>
+{% for slot in slots %}
+  <div>
+    {{ slot.start_time|date:"d M Y, H:i" }} to {{ slot.end_time|date:"H:i" }}
+    · ₹{{ slot.price }} · {{ slot.seats_left }} left
+    {% if slot.seats_left > 0 %}
+      <form method="post" action="{% url 'book_slot' slot.id %}" style="display:inline">
+        {% csrf_token %}
+        <input type="number" name="quantity" value="1" min="1">
+        <button type="submit">Book</button>
+      </form>
+    {% else %}
+      <strong>Sold out</strong>
+    {% endif %}
+  </div>
+{% empty %}
+  <p>No upcoming slots.</p>
+{% endfor %}
+{% endblock %}

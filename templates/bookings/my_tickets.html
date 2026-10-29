@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My active tickets</h2>
+{% for ticket in tickets %}
+  <div>
+    <h3>{{ ticket.booking.slot.event.title }}</h3>
+    <p>{{ ticket.booking.slot.start_time|date:"d M Y, H:i" }} · {{ ticket.booking.slot.event.location }}</p>
+    <p>Ticket ID: <code>{{ ticket.ticket_id }}</code></p>
+  </div>
+{% empty %}
+  <p>No active tickets.</p>
+{% endfor %}
+{% endblock %}

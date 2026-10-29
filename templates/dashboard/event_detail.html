@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ event.title }}</h2>
+<p>{{ event.description }}</p>
+<p>{{ event.get_event_type_display }} · {{ event.location }} ·
+   {% if event.is_active %}Active{% else %}Hidden{% endif %}</p>
+<p><a href="{% url 'org_event_update' event.pk %}">Edit event</a> |
+   <a href="{% url 'org_slot_create' event.pk %}">+ Add slot</a></p>
+
+<h3>Slots</h3>
+<table border="1" cellpadding="6">
+  <tr><th>Start</th><th>End</th><th>Price</th><th>Capacity</th><th>Booked</th><th>Left</th></tr>
+  {% for slot in event.slots.all %}
+  <tr>
+    <td>{{ slot.start_time|date:"d M Y, H:i" }}</td>
+    <td>{{ slot.end_time|date:"d M Y, H:i" }}</td>
+    <td>₹{{ slot.price }}</td>
+    <td>{{ slot.capacity }}</td>
+    <td>{{ slot.booked }}</td>
+    <td>{{ slot.seats_left }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="6">No slots yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
