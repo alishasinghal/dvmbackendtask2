@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, UpdateView
 
-from accounts.mixins import OrganizationRequiredMixin
+from accounts.mixin import OrganizationRequiredMixin
 from bookings.models import Ticket
 from events.models import Event
 from .forms import SlotForm
